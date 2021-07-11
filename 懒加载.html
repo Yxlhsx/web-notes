@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IntersectionObserver-懒加载</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      img {
+        min-width: 100vw;
+        min-height: 730px;
+        background-color: aquamarine;
+      }
+    </style>
+  </head>
+  <body>
+    <img data-src />
+    <img data-src />
+    <img data-src />
+    <img data-src />
+    <img data-src />
+    <img data-src />
+  </body>
+  <script>
+    const imgList = [
+      "https://game.gtimg.cn/images/lol/act/img/skin/big887000.jpg",
+      "https://game.gtimg.cn/images/lol/act/img/skin/big777000.jpg",
+      "https://game.gtimg.cn/images/lol/act/img/skin/big875000.jpg",
+      "https://game.gtimg.cn/images/lol/act/img/skin/big876000.jpg",
+      "https://game.gtimg.cn/images/lol/act/img/skin/big555000.jpg",
+      "https://game.gtimg.cn/images/lol/act/img/skin/big523000.jpg",
+    ];
+
+    // let imgDomString = "";
+    // for (let i = 0; i < imgList.length; i++) {
+    //   imgDomString += "<img data-src/>";
+    // }
+    // document.body.innerHTML = imgDomString;
+
+    var io = new IntersectionObserver((entries) => {
+      console.log(entries);
+      entries.forEach((item) => {
+        // 遍历entries数组
+        if (item.isIntersecting) {
+          // 当前元素可见
+          item.target.src = item.target.dataset.src; // 替换src
+          io.unobserve(item.target); // 停止观察当前元素 避免不可见时候再次调用callback函数
+        }
+      });
+    });
+
+    const imgEle = Array.from(document.querySelectorAll("[data-src]"));
+    imgEle.forEach((e, i) => {
+      e.setAttribute("data-src", imgList[i]);
+      e.setAttribute("alt", "加载中");
+      io.observe(e);
+    });
+  </script>
+</html>
