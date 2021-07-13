@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input id="file" type="file" />
+    <script>
+      var eleFile = document.querySelector("#file");
+      var file;
+      var render = new FileReader(),
+        img = new Image();
+      render.onload = function (e) {
+        img.src = e.target.result;
+      };
+      // 获取图片文件
+      eleFile.addEventListener("change", function (e) {
+        file = e.target.files[0];
+        if (file.type.indexOf("image") === 0) {
+          //读取文件，并返回一个URL格式的Base64字符串
+          render.readAsDataURL(file);
+        }
+      });
+
+      //使用canvas把图片画出来
+      var canvas = document.createElement("canvas");
+      var context = canvas.getContext("2d");
+
+      img.onload = function () {
+        //原始尺寸
+        var originWidth = this.width;
+        var originHeight = this.height;
+
+        //最大尺寸限制
+        var maxWidth = 200,
+          maxHeight = 200;
+
+        // 目标尺寸
+        var targetWidth = originWidth * 0.8,
+          targetHeight = originHeight * 0.8;
+
+        //画图
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
+        //清除画布
+        context.clearRect(0, 0, targetWidth, targetHeight);
+        //图片压缩
+        context.drawImage(img, 0, 0, targetWidth, targetHeight);
+        //canvas 转为blob并上传
+        canvas.toBlob(function (blob) {
+          const a = document.createElement("a");
+          a.href = URL.createObjectURL(blob);
+          a.download = "fileName"; // 这里填保存成的文件名
+          a.click();
+          URL.revokeObjectURL(a.href);
+          a.remove();
+        }, file.type || "image/png");
+        //在页面预览原图片
+        var div1 = document.createElement("div");
+        div1.innerText = "原图：";
+        document.body.appendChild(div1);
+        document.body.appendChild(img);
+        //canvas预览
+        var div2 = document.createElement("div");
+        div2.innerText = "canvas图：";
+        document.body.appendChild(div2);
+        document.body.appendChild(canvas);
+      };
+    </script>
+  </body>
+</html>
