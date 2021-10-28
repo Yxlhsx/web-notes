@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>无限加载</title>
+    <style>
+      body {
+        background-color: rgb(122, 122, 122);
+      }
+
+      .item {
+        height: 60px;
+        margin: 50px 0 50px 0;
+        background-color: rgb(85, 93, 70);
+        content-visibility: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container"></div>
+    <button>我是一个加载按钮</button>
+    <script>
+      const container = document.getElementById("container");
+
+      const div = document.createElement("div");
+      div.setAttribute("class", "item");
+
+      for (let i = 0; i < 10; i++) {
+        const _div = div.cloneNode(true);
+        _div.setAttribute("data-index", i);
+        _div.innerText = "我是一个item--" + i;
+        _div.onclick = clickItem;
+        container.appendChild(_div);
+      }
+
+      const io = new IntersectionObserver((entries) => {
+        console.log(entries);
+        entries.forEach((item) => {
+          // 遍历entries数组
+          if (item.isIntersecting) {
+            // 当前元素可见
+            setTimeout(() => {
+              add();
+            }, 500);
+          }
+        });
+      });
+
+      const button = document.getElementsByTagName("button")[0];
+      button.onclick = add;
+      io.observe(button);
+
+      function clickItem(e) {
+        console.log(e.target.dataset.index);
+      }
+
+      function add() {
+        const divList = document.querySelectorAll("#container>div");
+        const lastItem = divList[divList.length - 1];
+        console.log(lastItem);
+        let lastIndex = lastItem.dataset.index;
+        ++lastIndex;
+
+        const _div = div.cloneNode(true);
+        _div.setAttribute("data-index", lastIndex);
+        _div.innerText = "我是一个item--" + lastIndex;
+        _div.onclick = clickItem;
+        container.appendChild(_div);
+      }
+    </script>
+  </body>
+</html>
