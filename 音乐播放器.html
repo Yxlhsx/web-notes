@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <audio
+      id="audio"
+      src="https://m10.music.126.net/20220101025743/f243414ab97f1ce6bfe02cb32d39aed7/yyaac/550c/0053/5159/bfc1508d41792200f4bbf3dc38f6b5e9.m4a"
+      controls="controls"
+    >
+      您的浏览器不支持 video 标签。
+    </audio>
+    <button id="pauseBtn">暂停</button>
+    <button id="playBtn">播放</button>
+    <button id="nextBtn">快进5秒</button>
+    <button id="previousBtn">快退5秒</button>
+
+    <script>
+      const audioEle = document.getElementById("audio");
+      const pauseBtn = document.getElementById("pauseBtn");
+      const playBtn = document.getElementById("playBtn");
+      const nextBtn = document.getElementById("nextBtn");
+      const previousBtn = document.getElementById("previousBtn");
+
+      // 暂停
+      pauseBtn.onclick = () => {
+        audioEle.pause();
+      };
+
+      // 播放
+      playBtn.onclick = () => {
+        audioEle.play();
+      };
+
+      // 快进5秒
+      nextBtn.onclick = () => {
+        audioEle.currentTime = audioEle.currentTime + 5;
+        console.log("点了快进5秒");
+      };
+
+      // 快退5秒
+      previousBtn.onclick = () => {
+        audioEle.currentTime = audioEle.currentTime - 5;
+        console.log("点了快退5秒");
+      };
+    </script>
+  </body>
+</html>
