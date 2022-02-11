@@ -58,23 +58,23 @@
       ctx.fill();
 
       // 设置阴影
-      // ctx.shadowBlur = 20;
-      // ctx.shadowColor = "blue";
-      // ctx.shadowOffsetX = 0;
-      // ctx.shadowOffsetY = 0;
+      ctx.shadowBlur = 20;
+      ctx.shadowColor = "blue";
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 0;
 
       // 绘制文字
-      // ctx.font = "100px 思源黑体";
-      // let x = 300;
-      // setInterval(() => {
-      //   ctx.clearRect(0, 0, 1200, 800);
-      //   x -= 1;
-      //   if (x < -100) {
-      //     x = 300;
-      //   }
-      //   ctx.fillText("我不知道你在干什么", x, 300);
-      //   ctx.strokeText("你好啊", x, 400);
-      // }, 1000 / 60);
+      ctx.font = "100px 思源黑体";
+      let x = 300;
+      setInterval(() => {
+        ctx.clearRect(0, 0, 1200, 800);
+        x -= 0.2;
+        if (x < -100) {
+          x = 300;
+        }
+        ctx.fillText("我不知道你在干什么", x, 300);
+        ctx.strokeText("你好啊", x, 400);
+      }, 1000 / 60);
     </script>
   </body>
 </html>

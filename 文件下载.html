@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>文件下载</title>
+  </head>
+  <body>
+    <script>
+            const req = new XMLHttpRequest()
+      req.open('GET', 'http://localhost:9581/xysemi/project/export', true)
+      req.responseType = 'blob'
+      req.setRequestHeader('Content-Type', 'application/json')
+      req.setRequestHeader('Authorization', 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImUwMmRlMDU4LTU3YTUtNGMxOS05YjM1LWFlN2FmM2RlMmViYiJ9.4_wOXwBFm3iemcEVfwZHX-N_SC10Na0aXWzwYeKrp6fyswJcMQ0pV23S6e0Cts1iTiem6jNu7T5P_3iKm9QVUg')
+      req.onload = () => {
+        const data = req.response
+        const blob = new Blob([data])
+        var reader = new FileReader()
+        reader.readAsText(blob, 'utf-8')
+        reader.onload = () => {
+          try {
+            const json = JSON.parse(reader.result)
+            this.$message.error(json.message)
+          } catch {
+            const downloadElement = document.createElement('a')
+            const href = window.URL.createObjectURL(blob) // 创建下载的链接
+            downloadElement.href = href
+            downloadElement.download = '项目进度.xlsx' // 下载后文件名
+            document.body.appendChild(downloadElement)
+            downloadElement.click() // 点击下载
+            document.body.removeChild(downloadElement) // 下载完成移除元素
+            window.URL.revokeObjectURL(href) // 释放掉blob对象
+          }
+        }
+      }
+      req.send()
+    </script>
+  </body>
+</html>
