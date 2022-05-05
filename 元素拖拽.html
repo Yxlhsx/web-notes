@@ -18,14 +18,21 @@
 
     <script>
       const d = document.getElementById("d");
-      d.ondragenter = (e) => {
-        // console.log(e);
-      };
+      setTimeout(() => {
+        d.style.y = 100
+        console.dir(d);
+      }, 1000);
+      // d.ondragenter = (e) => {
+      //   // console.log(e);
+      // };
 
-      d.ondragend = (e) => {
-        e.target.top = e.y;
-        console.log(e.target.top);
-      };
+      // d.ondragleave
+
+      // d.ondragend = (e) => {
+      //   e.target.top = e.y;
+      //   console.log(e);
+      //   console.log(e.target.top);
+      // };
     </script>
   </body>
 </html>

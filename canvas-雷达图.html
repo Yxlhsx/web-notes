@@ -5,6 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>canvas-雷达图</title>
+    <style>
+      body {
+        background-color: black;
+      }
+    </style>
   </head>
   <body>
     <canvas id="canvas" width="1200" height="800"></canvas>
@@ -12,11 +17,9 @@
       // 获取画布对象
       /** @type {HTMLCanvasElement} */
       const canvas = document.getElementById("canvas");
-      console.log([canvas]);
 
       // 获取上下文对象（画笔）
       const ctx = canvas.getContext("2d");
-      console.log(ctx);
 
       // 绘制矩形
       //   ctx.rect(50, 50, 100, 100);
@@ -25,56 +28,72 @@
       //   ctx.fillStyle = "#fafafa";
       //   ctx.fill();
 
-      // 绘制路径
-      ctx.beginPath();
-      ctx.moveTo(100, 100);
-      ctx.lineTo(200, 100);
-      ctx.lineTo(250, 100 + Math.sqrt(Math.pow(100, 2) - Math.pow(50, 2)));
-      ctx.lineTo(200, 100 + 2 * Math.sqrt(Math.pow(100, 2) - Math.pow(50, 2)));
-      ctx.lineTo(100, 100 + 2 * Math.sqrt(Math.pow(100, 2) - Math.pow(50, 2)));
-      ctx.lineTo(50, 100 + Math.sqrt(Math.pow(100, 2) - Math.pow(50, 2)));
-      ctx.lineTo(100, 100);
-      ctx.closePath();
+      function bg(x, y) {
+        // 绘制路径
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(2 * x, y);
+        ctx.lineTo(2.5 * x, y + Math.sqrt(Math.pow(y, 2) - Math.pow(y / 2, 2)));
+        ctx.lineTo(
+          2 * x,
+          y + 2 * Math.sqrt(Math.pow(y, 2) - Math.pow(y / 2, 2))
+        );
+        ctx.lineTo(x, y + 2 * Math.sqrt(Math.pow(y, 2) - Math.pow(y / 2, 2)));
+        ctx.lineTo(x / 2, y + Math.sqrt(Math.pow(y, 2) - Math.pow(y / 2, 2)));
+        ctx.lineTo(x, y);
+        ctx.closePath();
 
-      // 描边
-      ctx.strokeStyle = "red";
-      ctx.lineCap = "round"; // 绘制圆形的结束线帽
-      ctx.lineJoin = "round"; // 绘制连接处圆形类型
-      ctx.lineWidth = 5;
-      ctx.stroke();
-      ctx.add;
+        // 描边
+        ctx.strokeStyle = "red";
+        ctx.lineCap = "round"; // 绘制圆形的结束线帽
+        ctx.lineJoin = "round"; // 绘制连接处圆形类型
+        ctx.lineWidth = 5;
+        ctx.stroke();
+        ctx.add;
+      }
 
-      ctx.beginPath();
-      ctx.moveTo(150, 50);
-      ctx.lineTo(150, 300);
-      ctx.lineTo(200, 300);
-      ctx.closePath();
-      ctx.strokeStyle = "#3A8CE1";
-      ctx.lineCap = "round"; // 绘制圆形的结束线帽
-      ctx.lineJoin = "round"; // 绘制连接处圆形类型
-      ctx.lineWidth = 2;
-      ctx.stroke();
-      ctx.fillStyle = "#3A8CE1";
-      ctx.fill();
-
-      // 设置阴影
-      ctx.shadowBlur = 20;
-      ctx.shadowColor = "blue";
-      ctx.shadowOffsetX = 0;
-      ctx.shadowOffsetY = 0;
-
-      // 绘制文字
-      ctx.font = "100px 思源黑体";
-      let x = 300;
+      let positionX = 100;
+      let positionY = 100;
+      bg(positionX, positionY);
       setInterval(() => {
         ctx.clearRect(0, 0, 1200, 800);
-        x -= 0.2;
-        if (x < -100) {
-          x = 300;
-        }
-        ctx.fillText("我不知道你在干什么", x, 300);
-        ctx.strokeText("你好啊", x, 400);
+        bg(positionX, positionY);
+        positionX = positionX + 0.2;
+        positionY = positionY + 0.2;
+        console.log(1);
       }, 1000 / 60);
+
+      // ctx.beginPath();
+      // ctx.moveTo(150, 50);
+      // ctx.lineTo(150, 300);
+      // ctx.lineTo(200, 300);
+      // ctx.closePath();
+      // ctx.strokeStyle = "#3A8CE1";
+      // ctx.lineCap = "round"; // 绘制圆形的结束线帽
+      // ctx.lineJoin = "round"; // 绘制连接处圆形类型
+      // ctx.lineWidth = 2;
+      // ctx.stroke();
+      // ctx.fillStyle = "#3A8CE1";
+      // ctx.fill();
+
+      // // 设置阴影
+      // ctx.shadowBlur = 20;
+      // ctx.shadowColor = "blue";
+      // ctx.shadowOffsetX = 0;
+      // ctx.shadowOffsetY = 0;
+
+      // 绘制文字
+      // ctx.font = "100px 思源黑体";
+      // let x = 300;
+      // setInterval(() => {
+      //   ctx.clearRect(0, 0, 1200, 800);
+      //   x -= 0.2;
+      //   if (x < -100) {
+      //     x = 300;
+      //   }
+      //   ctx.fillText("我不知道你在干什么", x, 300);
+      //   ctx.strokeText("你好啊", x, 400);
+      // }, 1000 / 60);
     </script>
   </body>
 </html>
