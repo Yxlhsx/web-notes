@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 调用,data为转换后最终的数据格式
+        const data = [
+            "星期一,星期二,星期三,星期四,星期五",
+            "1,2,3,4,5"
+        ]
+        const name = '测试表格'
+        downExcel(data, name)
+
+
+
+        /**
+         * 将数据转表格下载
+         * data格式：["1,2,3","1,2,3"]
+         */
+        function downExcel(data, name) {
+            // 创建Blob对象 传入一个合适的MIME类型
+            const blob = new Blob(
+                ['\ufeff' + data.join('\n')],
+                { type: 'text/csv,charset=UTF-8' }
+            )
+            const csvUrl = URL.createObjectURL(blob)
+            let link = document.createElement('a')
+            // 文件名字
+            link.download = `${name}.csv`
+            // 触发下载
+            link.href = csvUrl
+            link.click()
+        }
+    </script>
+</body>
+
+</html>
