@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>文件下载</title>
+    </head>
+    <body>
+        <script>
+            const req = new XMLHttpRequest()
+            req.open('GET', 'http://localhost:8080/test/export', true)
+            req.responseType = 'blob'
+            req.onload = () => {
+                const data = req.response
+                const blob = new Blob([data])
+                var reader = new FileReader()
+                reader.readAsText(blob, 'utf-8')
+                reader.onload = () => {
+                    try {
+                        const json = JSON.parse(reader.result)
+                        this.$message.error(json.message)
+                    } catch {
+                        const downloadElement = document.createElement('a')
+                        const href = window.URL.createObjectURL(blob) // 创建下载的链接
+                        downloadElement.href = href
+                        downloadElement.download = 'test.xlsx' // 下载后文件名
+                        document.body.appendChild(downloadElement)
+                        downloadElement.click() // 点击下载
+                        document.body.removeChild(downloadElement) // 下载完成移除元素
+                        window.URL.revokeObjectURL(href) // 释放掉blob对象
+                    }
+                }
+            }
+            req.send()
+        </script>
+    </body>
+</html>
