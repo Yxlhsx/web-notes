@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            body {
+                font-family: monospace;
+            }
+
+            div {
+                box-sizing: border-box;
+                width: 200px;
+                height: 100%;
+                border: 1px solid red;
+            }
+
+            #text {
+                /* overflow: hidden;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                text-overflow: clip; */
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <span id="text"> </span>
+            <button id="show" href="#">展开</button>
+        </div>
+        <script>
+            const text =
+                '这事呢欧容氨基酸电话卡手机号askjaskjd哈萨克接电话看了很多萨Ad123asdas迪克拉伸会打瞌睡的卡'
+            const _text = text.substring(0, 20) + '...'
+
+            const textEle = document.getElementById('text')
+            textEle.innerText = _text
+
+            const showEle = document.getElementById('show')
+            showEle.onclick = () => {
+                console.log(showEle.innerText)
+                if (showEle.innerText === '展开') {
+                    showEle.innerText = '收起'
+                    textEle.innerText = text
+                } else {
+                    showEle.innerText = '展开'
+                    textEle.innerText = _text
+                }
+            }
+        </script>
+    </body>
+</html>

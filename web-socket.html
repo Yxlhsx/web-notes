@@ -1,39 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <button onclick="connection()">连接</button>
-    <button onclick="send()">发送</button>
-    <script>
-      let socket;
-      const url = "ws://localhost:8080/api";
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <p>
+            <span>连接状态</span>
+            <i id="connection_name"></i>
+            <b id="connection_state">未连接</b>
+        </p>
+        <input id="name_input" type="text" />
+        <button onclick="connection()">连接</button>
+        <button onclick="disconnect()">断开</button>
+        <input id="msg_input" type="text"/ >
+        <button id="send">发送</button>
+        <div id="msg_block"></div>
+        <script>
+            const connectionStateEle = document.getElementById('connection_state')
+            const connectionNameEle = document.getElementById('connection_name')
+            const msgBlockEle = document.getElementById('msg_block')
 
-      function connection() {
-        if (socket) {
-          socket.close();
-          socket = null;
-        }
-        socket = new WebSocket(url);
-        socket.onopen = () => {
-          console.log("打开连接");
-          console.log(socket.readyState);
-        };
-        socket.onmessage = (msg) => {
-          console.log(msg);
-        };
-        socket.onclose = () => {
-          console.log("关闭连接");
-        };
-      }
+            const nameInputEle = document.getElementById('name_input')
+            const msgInputEle = document.getElementById('msg_input')
 
-      function send() {
-        socket.send("你好");
-      }
-    </script>
-  </body>
+            const sendBttonEle = document.getElementById('send')
+            sendBttonEle.onclick = send
+
+            let socket
+            const url = 'ws://localhost:8080/chat/'
+
+            function connection() {
+                if (socket) {
+                    socket.close()
+                    socket = null
+                }
+
+                socket = new WebSocket(url + nameInputEle.value)
+
+                socket.onopen = () => {
+                    console.log('打开连接')
+                    console.log(socket.readyState)
+                    connectionStateEle.innerHTML = '已连接'
+                    connectionNameEle.innerHTML = nameInputEle.value
+                }
+                socket.onmessage = msg => {
+                    console.log(msg)
+                    msgBlockEle.innerText = msg.data
+                }
+                socket.onclose = () => {
+                    console.log('关闭连接')
+                    connectionStateEle.innerHTML = '已关闭'
+                }
+            }
+
+            function disconnect() {
+                socket.close()
+            }
+
+            function send() {
+                socket.send(msgInputEle.value)
+            }
+        </script>
+    </body>
 </html>
