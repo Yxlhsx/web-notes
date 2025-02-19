@@ -1,51 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <style>
-      #app {
-        height: 100vh;
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <style>
+    .list-container {
+      height: 400px;
+      overflow: auto;
+      position: relative;
+      border: 1px solid #ccc;
+    }
+
+    .list-phantom {
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      z-index: -1;
+    }
+
+    .list-content {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+    }
+
+    .list-item {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      height: 40px;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="virtualList" class="list-container">
+    <div class="list-phantom"></div>
+    <div class="list-content"></div>
+  </div>
+
+  <script>
+    class VirtualList {
+      constructor(options) {
+        this.containerHeight = options.height;
+        this.itemHeight = options.itemHeight;
+        this.data = options.data;
+        this.container = options.container;
+
+        this.visibleCount = Math.ceil(this.containerHeight / this.itemHeight);
+        this.startIndex = 0;
+        this.endIndex = this.startIndex + this.visibleCount;
+
+        this.phantom = this.container.querySelector('.list-phantom');
+        this.content = this.container.querySelector('.list-content');
+
+        this.init();
       }
-      [v-cloak] {
-        display: none;
+
+      init() {
+        // 设置滚动容器的总高度
+        this.phantom.style.height = this.data.length * this.itemHeight + 'px';
+
+        // 监听滚动事件
+        this.container.addEventListener('scroll', this.handleScroll.bind(this));
+
+        // 首次渲染
+        this.render();
       }
-    </style>
-  </head>
-  <body>
-    <div id="app">
-      <div @scroll="handleScroll">
-        <ul id="container" v-cloak>
-          <li v-for="item in showList">{{item}}</li>
-        </ul>
-      </div>
-    </div>
 
-    <script src="https://unpkg.com/vue/dist/vue.js"></script>
-    <script>
-      new Vue({
-        el: "#app",
-        data: {
-          list: [],
-          showList: [],
-        },
-        mounted() {
-          window.addEventListener("scroll", this.yyy, true);
+      handleScroll() {
+        // 获取滚动位置
+        const scrollTop = this.container.scrollTop;
+        // 计算开始索引
+        this.startIndex = Math.floor(scrollTop / this.itemHeight);
+        this.endIndex = this.startIndex + this.visibleCount;
 
-          for (let i = 0; i < 1000; i++) {
-            this.list.push(i);
-          }
+        // 更新渲染的内容
+        this.render();
+      }
 
-          this.showList = this.list;
-        },
-        methods: {
-          handleScroll(e) {
-            console.log(e);
-          },
-        },
-      });
-    </script>
-  </body>
+      render() {
+        // 设置偏移量
+        this.content.style.transform = `translateY(${this.startIndex * this.itemHeight}px)`;
+
+        // 渲染可视区域的内容
+        const visibleData = this.data.slice(this.startIndex, this.endIndex);
+        this.content.innerHTML = visibleData.map(item =>
+          `<div class="list-item">${item}</div>`
+        ).join('');
+      }
+    }
+
+    // 使用示例
+    const data = Array.from({ length: 100000 }, (_, i) => `Item ${i + 1}`);
+
+    new VirtualList({
+      height: 400,
+      itemHeight: 40,
+      data: data,
+      container: document.getElementById('virtualList')
+    });
+  </script>
+</body>
+
 </html>
