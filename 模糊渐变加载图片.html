@@ -1,46 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>模糊渐变加载图片</title>
-    <style>
-      .vague-loading {
-        width: 1200px;
-        filter: blur(15px);
-        transition: all 0.8s;
-      }
-    </style>
-  </head>
-  <body>
-    <img
-      class="vague-loading"
-      src="https://s1.ax1x.com/2020/08/29/d7lart.md.jpg"
-      data-img-src="https://s1.ax1x.com/2020/08/29/d7lart.jpg"
-      alt="模糊加载图片"
-    />
 
-    <img
-      class="vague-loading"
-      src="https://s1.ax1x.com/2020/08/29/d7Qzgs.md.jpg"
-      data-img-src="https://s1.ax1x.com/2020/08/29/d7Qzgs.jpg"
-      alt="模糊加载图片"
-    />
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>模糊渐变加载图片</title>
+  <style>
+    .vague-loading {
+      width: 1200px;
+      filter: blur(15px);
+      transition: all 0.8s;
+    }
+  </style>
+</head>
 
-    <script>
-      const imgList = document.getElementsByClassName("vague-loading");
+<body>
+  <img class="vague-loading" src="https://s1.ax1x.com/2020/08/29/d7lart.md.jpg"
+    data-img-src="https://s1.ax1x.com/2020/08/29/d7lart.jpg" alt="模糊加载图片" />
 
-      Array.from(imgList).forEach((ele) => {
-        const imgUrl = ele.dataset.imgSrc;
-        const imgObject = new Image();
-        imgObject.src = imgUrl;
-        imgObject.onload = () => {
-          ele.src = imgUrl;
-          ele.style.filter = "none";
-          console.log("加载完成");
-        };
-      });
-    </script>
-  </body>
+  <img class="vague-loading" src="https://s1.ax1x.com/2020/08/29/d7Qzgs.md.jpg"
+    data-img-src="https://s1.ax1x.com/2020/08/29/d7Qzgs.jpg" alt="模糊加载图片" />
+
+  <script>
+    const imgList = document.getElementsByClassName("vague-loading");
+
+    Array.from(imgList).forEach((ele) => {
+      const imgUrl = ele.dataset.imgSrc;
+      const imgObject = new Image();
+      imgObject.src = imgUrl;
+      imgObject.onload = () => {
+        ele.src = imgUrl;
+        ele.style.filter = "none";
+        console.log("加载完成");
+      };
+    });
+  </script>
+</body>
+
 </html>
