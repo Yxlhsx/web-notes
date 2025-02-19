@@ -1,13 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Document</title>
-    </head>
-    <body>
-        <label for="video">录制视频</label>
-        <input hidden type="file" id="video" accept="video/*" capture="user" />
-    </body>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>拍照</title>
+</head>
+
+<body>
+    <video id="video" width="640" height="480" autoplay></video>
+    <button id="snap">拍照</button>
+    <canvas id="canvas" width="640" height="480"></canvas>
+
+    <script>// 获取页面元素
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const snap = document.getElementById('snap');
+        const constraints = {
+            video: true
+        };
+
+        // 访问摄像头
+        navigator.mediaDevices.getUserMedia(constraints)
+            .then(function (stream) {
+                video.srcObject = stream;
+            })
+            .catch(function (err) {
+                console.log("发生错误: " + err);
+            });
+
+        // 拍照按钮点击事件
+        snap.addEventListener("click", function () {
+            const context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, 640, 480);
+        });</script>
+</body>
+
 </html>
