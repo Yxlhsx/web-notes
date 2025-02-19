@@ -1,22 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <div id="rich-text">
-      <input type="text" name="" id="" />
-      <button id="btn">按钮</button>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>富文本编辑器</title>
+  <style>
+    .editor-container {
+      max-width: 800px;
+      margin: 20px auto;
+    }
+
+    .toolbar {
+      padding: 10px;
+      background-color: #f5f5f5;
+      border: 1px solid #ddd;
+      border-bottom: none;
+    }
+
+    .toolbar button {
+      margin: 0 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+
+    #editor {
+      min-height: 300px;
+      padding: 20px;
+      border: 1px solid #ddd;
+      background-color: white;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="editor-container">
+    <div class="toolbar">
+      <button onclick="execCommand('bold')"><b>B</b></button>
+      <button onclick="execCommand('italic')"><i>I</i></button>
+      <button onclick="execCommand('underline')"><u>U</u></button>
+      <button onclick="execCommand('insertOrderedList')">1.</button>
+      <button onclick="execCommand('insertUnorderedList')">•</button>
+      <button onclick="execCommand('justifyLeft')">←</button>
+      <button onclick="execCommand('justifyCenter')">↔</button>
+      <button onclick="execCommand('justifyRight')">→</button>
     </div>
-    <script>
-      const btn = document.getElementById("btn");
-      btn.onclick = () => {
-        const str = document.execCommand("bold", false, null);
-        alert(str);
-      };
-    </script>
-  </body>
+    <div id="editor" contenteditable="true">
+      在这里开始输入内容...
+    </div>
+  </div>
+
+  <script>
+    function execCommand(command) {
+      document.execCommand(command, false, null);
+    }
+  </script>
+</body>
+
 </html>
